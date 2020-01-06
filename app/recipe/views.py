@@ -1,8 +1,9 @@
-from core.models import Ingredient, Recipe, Tag
-from recipe import serializers
 from rest_framework import mixins, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+
+from core.models import Ingredient, Recipe, Tag
+from recipe import serializers
 
 
 class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
@@ -50,3 +51,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return serializers.RecipeDetailSerializer
 
         return self.serializer_class
+
+    def perform_create(self, serializer):
+        """Create a new recipe"""
+        serializer.save(user=self.request.user)

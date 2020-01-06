@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APIClient
 
 from core.models import Ingredient, Recipe, Tag
 from recipe.serializers import RecipeDetailSerializer, RecipeSerializer
-from rest_framework import status
-from rest_framework.test import APIClient
 
 RECIPES_URL = reverse('recipe:recipe-list')
 
@@ -106,7 +106,7 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_create_recipe_successful(self):
         """Test recipe creation with valid arguments is successful"""
-        payload = {'title': "Crab Soup", 'cost': "5.50", 'time_minutes': 15}
+        payload = {'title': "Crab Soup", 'cost': 5.50, 'time_minutes': 15}
         res = self.client.post(RECIPES_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
